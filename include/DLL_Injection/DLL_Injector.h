@@ -5,6 +5,7 @@
 
 #include <Logging.h>
 #include <TlHelp32.h>
+#include <tchar.h>
 
 #include <filesystem>
 #include <string>
@@ -14,6 +15,14 @@ namespace DLL_Injector {
     namespace Util {
 
         DWORD GetProcId(const std::string& exeName) {
+            std::basic_string<TCHAR> exeNameT;
+#ifdef UNICODE
+            int exeNameLength = MultiByteToWideChar(CP_UTF8, 0, exeName.c_str(), -1, nullptr, 0);
+            exeNameT.resize(exeNameLength - 1);
+            MultiByteToWideChar(CP_UTF8, 0, exeName.c_str(), -1, &exeNameT[0], exeNameLength);
+#else
+            exeNameT = exeName;
+#endif
             DWORD  procId = 0;
             HANDLE hSnap  = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
             if (hSnap != INVALID_HANDLE_VALUE) {
@@ -21,7 +30,7 @@ namespace DLL_Injector {
                 procEntry.dwSize = sizeof(procEntry);
                 if (Process32First(hSnap, &procEntry)) {
                     do {
-                        if (!_stricmp(procEntry.szExeFile, exeName.c_str())) {
+                        if (!_tcsicmp(procEntry.szExeFile, exeNameT.c_str())) {
                             procId = procEntry.th32ProcessID;
                             break;
                         }
