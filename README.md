@@ -36,6 +36,10 @@ add_executable(Example main.cpp)
 # Find dll_injection and link it to your target
 find_package(dll_injection CONFIG REQUIRED)
 target_link_libraries(Example PRIVATE MrowrLib::dll_injection)
+
+# If you want logs
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(Example PRIVATE spdlog::spdlog)
 ```
 
 #### `vcpkg.json`
@@ -43,6 +47,14 @@ target_link_libraries(Example PRIVATE MrowrLib::dll_injection)
 ```json
 {
     "dependencies": ["mrowr-dll-injection"]
+}
+```
+
+If you want `dll_injection` to log its progress:
+
+```json
+{
+    "dependencies": ["mrowr-dll-injection", "spdlog"]
 }
 ```
 
@@ -60,7 +72,7 @@ target_link_libraries(Example PRIVATE MrowrLib::dll_injection)
             "kind": "git",
             "repository": "https://github.com/MrowrLib/Packages.git",
             "baseline": "3efc6f540b3251a5a0b157c414d79da7b81c0abe",
-            "packages": ["mrowr-dll-injection"]
+            "packages": ["mrowr-dll-injection", "mrowr-log"]
         }
     ]
 }
@@ -68,6 +80,7 @@ target_link_libraries(Example PRIVATE MrowrLib::dll_injection)
 
 > _Update the default-registry baseline to the latest commit from https://github.com/microsoft/vcpkg_  
 > _Update the MrowrLib/Packages baseline to the latest commit from https://github.com/MrowrLib/Packages_  
+> _**Don't forget to include mrowr-log** (dependency of dll_injection)_
 
 ## Why?
 
@@ -89,6 +102,8 @@ void Example() {
     }
 }
 ```
+
+### How does it work?
 
 - Finds the process ID of the process with the given name
   - By default, will wait for the process to start if it is not running
