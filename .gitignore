@@ -4,3 +4,4 @@ build
 .xmake
 *.dll
 *.exe
+.cache
