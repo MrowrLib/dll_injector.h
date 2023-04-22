@@ -71,7 +71,7 @@ If you want `dll_injection` to log its progress:
         {
             "kind": "git",
             "repository": "https://github.com/MrowrLib/Packages.git",
-            "baseline": "3efc6f540b3251a5a0b157c414d79da7b81c0abe",
+            "baseline": "d7f4342ef511498395674a3dda03695e61baff26",
             "packages": ["mrowr-dll-injection", "mrowr-log"]
         }
     ]
