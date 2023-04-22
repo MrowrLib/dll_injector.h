@@ -93,13 +93,12 @@ I was frequently injecting DLLs into really old games on Windows.
 #include <iostream>
 
 void Example() {
-    InjectDLL("app.exe", "library.dll"); // Waits for app.exe to be found...
-
-    // If you do not want InjectDLL() to block and wait for the process to start:
-    if (InjectDLL("app.exe", "library.dll", false)) {
-        // ^ will return false immediately if the process it not running
+    // If the app.exe process is not found (its not running), this returns false immediately:
+    if (InjectDLL("app.exe", "library.dll"))
         std::cout << "Injected library.dll into app.exe" << std::endl;
-    }
+
+    // If you want to block and wait for the process to start, set the wait parameter to true:
+    InjectDLL("app.exe", "library.dll", true);
 }
 ```
 

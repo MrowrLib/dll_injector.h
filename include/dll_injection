@@ -77,7 +77,7 @@ namespace DLL_Injection {
     }
 
     bool InjectDLL(
-        const std::string& exeName, const std::string& dllPath, bool waitForProcess = true
+        const std::string& exeName, const std::string& dllPath, bool waitForProcess = false
     ) {
         if (!std::filesystem::exists(dllPath)) {
             _Log_("DLL does not exist: {}", dllPath);
@@ -90,6 +90,8 @@ namespace DLL_Injection {
     }
 }
 
-bool InjectDLL(const std::string& exeName, const std::string& dllPath, bool waitForProcess = true) {
+bool InjectDLL(
+    const std::string& exeName, const std::string& dllPath, bool waitForProcess = false
+) {
     return DLL_Injection::InjectDLL(exeName, dllPath, waitForProcess);
 }
