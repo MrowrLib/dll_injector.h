@@ -10,10 +10,8 @@
 #include <filesystem>
 #include <string>
 
-// Namespace is private for now.
-// When we're ready to make these functions public, we'll move them to a named namespace.
 // TODO: make it one function called like GetProcessIdByName() which returns a std::promise<DWORD>
-namespace {
+namespace DLL_Injection {
 
     DWORD GetProcId(const std::string& exeName) {
         std::basic_string<TCHAR> exeNameT;
@@ -53,7 +51,7 @@ namespace {
 
     bool IsProcessRunning(const std::string& exeName) { return GetProcId(exeName) != 0; }
 
-    void InjectDLL_using_CreateRemoteThread_LoadLibraryA(
+    bool InjectDLL_using_CreateRemoteThread_LoadLibraryA(
         const std::string& exeName, const std::string& dllPath, bool waitForProcess = true
     ) {
         DWORD procID;
@@ -62,7 +60,7 @@ namespace {
 
         if (!procID) {
             _Log_("Process not found: {}", exeName);
-            return;
+            return false;
         }
         _Log_("Injecting DLL '{}' into process '{}' (PID: {})", dllPath, exeName, procID);
 
@@ -75,14 +73,23 @@ namespace {
                 CreateRemoteThread(hProc, 0, 0, (LPTHREAD_START_ROUTINE)LoadLibraryA, loc, 0, 0);
             if (hThread) CloseHandle(hThread);
         }
+        return true;
+    }
+
+    bool InjectDLL(
+        const std::string& exeName, const std::string& dllPath, bool waitForProcess = true
+    ) {
+        if (!std::filesystem::exists(dllPath)) {
+            _Log_("DLL does not exist: {}", dllPath);
+            return false;
+        }
+        auto absoluteDllPath = std::filesystem::absolute(dllPath).string();
+        return InjectDLL_using_CreateRemoteThread_LoadLibraryA(
+            exeName, absoluteDllPath, waitForProcess
+        );
     }
 }
 
-void InjectDLL(const std::string& exeName, const std::string& dllPath, bool waitForProcess = true) {
-    if (!std::filesystem::exists(dllPath)) {
-        _Log_("DLL does not exist: {}", dllPath);
-        return;
-    }
-    auto absoluteDllPath = std::filesystem::absolute(dllPath).string();
-    InjectDLL_using_CreateRemoteThread_LoadLibraryA(exeName, absoluteDllPath, waitForProcess);
+bool InjectDLL(const std::string& exeName, const std::string& dllPath, bool waitForProcess = true) {
+    return DLL_Injection::InjectDLL(exeName, dllPath, waitForProcess);
 }
