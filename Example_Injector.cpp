@@ -1,6 +1,6 @@
-#include <DLL_Injection/DLL_Injector.h>
-
+#include <dll_injection>
 #include <iostream>
+
 
 int main(int argc, char** argv) {
     auto processName = argv[1];
@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 
     std::cout << "Injecting " << dllPath << " into " << processName << " . . .\n";
 
-    DLL_Injector::InjectDLL(processName, dllPath, false);
+    InjectDLL(processName, dllPath, false);
 
     std::cout << "Injection complete!\n";
 }
