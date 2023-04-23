@@ -35,7 +35,7 @@ add_executable(Example main.cpp)
 
 # Find dll_injection and link it to your target
 find_package(dll_injection CONFIG REQUIRED)
-target_link_libraries(Example PRIVATE MrowrLib::dll_injection)
+target_link_libraries(Example PRIVATE dll_injection::dll_injection)
 
 # If you want logs
 find_package(spdlog CONFIG REQUIRED)

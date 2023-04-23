@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 project(dll_injection VERSION 0.1.0 LANGUAGES CXX)
-set(namespace MrowrLib)
+set(namespace dll_injection)
 
 option(BUILD_EXAMPLE "Build the example target" ON)
 
@@ -68,6 +68,6 @@ if(BUILD_EXAMPLE)
     # I don't know why, but this .dll does not seem to inject OK when built here with CMake
     # Which is weird because the same .dll works fine when built with xmake
     add_library(Example_Injected SHARED Example_Injected.cpp)
-    target_link_libraries(Example_Injected PRIVATE MrowrLib::_Log_ spdlog::spdlog)
+    target_link_libraries(Example_Injected PRIVATE _Log_::_Log_ spdlog::spdlog)
     target_compile_features(Example_Injected PRIVATE cxx_std_20)
 endif()
