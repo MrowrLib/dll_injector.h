@@ -8,9 +8,8 @@ add_requires("_Log_", "spdlog")
 
 target("dll_injection")
     set_kind("headeronly")
-    add_headerfiles("include/dll_injection")
-    add_includedirs("include", {public = true})
-    add_packages("_Log_", {public = true})
+    add_includedirs("include", { public = true })
+    add_packages("_Log_", { public = true} )
 
 target("Example_Injector")
     set_kind("binary")

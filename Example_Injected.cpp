@@ -1,6 +1,5 @@
 #include <Windows.h>
-
-#include <_Log_>
+#include <_Log_.h>
 
 _LogToFile_("C:/temp/Example Injected DLL.log");
 

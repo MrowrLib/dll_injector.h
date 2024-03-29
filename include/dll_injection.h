@@ -4,9 +4,9 @@
 // ^ require Windows.h first
 
 #include <TlHelp32.h>
+#include <_Log_.h>
 #include <tchar.h>
 
-#include <_Log_>
 #include <filesystem>
 #include <string>
 

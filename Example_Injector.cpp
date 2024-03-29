@@ -1,4 +1,5 @@
-#include <dll_injection>
+#include <dll_injection.h>
+
 #include <iostream>
 
 _LogToFile_("DLL Injector.log");
