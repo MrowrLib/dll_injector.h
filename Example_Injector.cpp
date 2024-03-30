@@ -1,4 +1,4 @@
-#include <dll_injection.h>
+#include <dll_injector.h>
 
 #include <iostream>
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
     std::cout << "Injecting " << dllPath << " into " << processName << " . . .\n";
 
-    InjectDLL(processName, dllPath, false);
+    DLL_Injection::InjectDLL(processName, dllPath, false);
 
     std::cout << "Injection complete!\n";
 }
